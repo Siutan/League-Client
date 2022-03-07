@@ -1,6 +1,14 @@
 <script>
     // Name
     export let name;
+    export let lmao;
+
+    // conditional output
+    let yes = false;
+
+    if (yes === true) {
+        console.log(lmao)
+    }
 
     //close btn
     function handleClose(e) {
@@ -9,7 +17,7 @@
 
 </script>
 
-<main class="">
+<main class="overflow-hidden">
     <div class="bg-gray-500 flex flex-col h-screen bg-background-1">
         <div class="relative h-5" style="-webkit-app-region: drag">
       <span class="absolute inset-y-1 right-2">
@@ -41,6 +49,7 @@
                     </div>
                     <!-- Bottom Icons -->
                     <div class="flex flex-col items-center mt-20">
+                        <!-- League of Legends -->
                         <a class="flex items-center justify-center w-12 h-12 mt-2 rounded-full hover:bg-white hover:bg-opacity-5 hover:text-gray-300" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 30" width="30px" height="30px">
                                 <g id="surface6542987">
@@ -49,6 +58,7 @@
                             </svg>
 
                         </a>
+                        <!-- Valorant -->
                         <a class="flex items-center justify-center w-12 h-12 mt-2 rounded-full hover:bg-white hover:bg-opacity-5 hover:text-gray-300" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24px" height="24px">
                                 <g id="surface6550042">
@@ -56,6 +66,7 @@
                                 </g>
                             </svg>
                         </a>
+                        <!-- Legends of Runeterra -->
                         <a class="relative flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-white hover:bg-opacity-5 hover:text-gray-300" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="30px" height="30px">
                                 <g id="surface6557498">
@@ -75,8 +86,15 @@
                 <!-- Left Sidebar End  -->
 
                 <!-- Main Content -->
-                <div class=" inset-y-80 right-0 flex justify-center items-center">
-                    <a class="text-4xl">hey there!</a>
+                <div class=" absolute inset-y-80 left-40 flex justify-center items-center">
+                    <div class="container">
+                        <div class="bg-black bg-opacity-80 h-96 w-96 rounded-lg">
+                            <div class="bg-blue-100 rounded-full h-24 w-24 flex items-center justify-center">
+                                circle
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- Main Content End -->
 
