@@ -9,7 +9,7 @@
 
 </script>
 
-<main class="overflow-hidden">
+<main class="">
     <div class="bg-gray-500 flex flex-col h-screen bg-background-1">
         <div class="relative h-5" style="-webkit-app-region: drag">
       <span class="absolute inset-y-1 right-2">
@@ -21,7 +21,7 @@
           </svg>
         </button>
       </span>
-            <div class="">
+            <div class="justify-center items-center">
                 <!-- Left Sidebar Start -->
                 <div class="flex flex-col items-center w-16 h-screen bg-black bg-opacity-50 text-gray-100 border-r-4 border-opacity-40 border-black">
                     <!-- Logo -->
@@ -73,6 +73,12 @@
                     </a>
                 </div>
                 <!-- Left Sidebar End  -->
+
+                <!-- Main Content -->
+                <div class=" inset-y-80 right-0 flex justify-center items-center">
+                    <a class="text-4xl">hey there!</a>
+                </div>
+                <!-- Main Content End -->
 
                 <!-- Right Sidebar Start -->
                 <div>
