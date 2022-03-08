@@ -15,16 +15,14 @@ fetch('https://api.leaguestats.gg/summoner/basic', {
 		console.error('Error:', error);
 	});
 
-// testing pass through
-function pog() {
-  return "pog"
-}
+let summonerData = JSON.parse(localStorage.getItem("summonerBasic"));
 
 const app = new App({
 	target: document.body,
 	props: {
-		name: 'world',
-		lmao: `${console.log(localStorage.getItem('summonerBasic'))}`,
+		summonerIcon: `${summonerData.account.profileIconId}`,
+		summonerLevel: `${summonerData.account.summonerLevel}`,
+		summonerName: `${summonerData.account.name}`,
 	}
 
 });

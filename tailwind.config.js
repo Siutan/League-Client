@@ -11,6 +11,11 @@ module.exports = {
         extend: {
             backgroundImage: {
                 'background-1': "url('../public/img/background-1.jpg')"
+            },
+            spacing: {
+                '100': '30rem',
+                '200': '40rem',
+                '300': '50rem',
             }
         }
     },

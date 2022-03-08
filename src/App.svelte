@@ -1,13 +1,14 @@
 <script>
-    // Name
-    export let name;
-    export let lmao;
+    // imports
+    export let summonerIcon;
+    export let summonerLevel;
+    export let summonerName;
 
     // conditional output
     let yes = false;
 
     if (yes === true) {
-        console.log(lmao)
+        console.log(summonerName)
     }
 
     //close btn
@@ -53,16 +54,15 @@
                         <a class="flex items-center justify-center w-12 h-12 mt-2 rounded-full hover:bg-white hover:bg-opacity-5 hover:text-gray-300" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 30" width="30px" height="30px">
                                 <g id="surface6542987">
-                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 7 4 L 9 7.25 L 9 22.75 L 6.875 26 L 21.957031 26 L 25 22 L 14 22 L 14 4 Z M 16 4.050781 L 16 6.058594 C 20.492188 6.558594 24 10.375 24 15 C 24 16.847656 23.4375 18.570312 22.480469 20 L 24.785156 20 C 25.554688 18.496094 26 16.800781 26 15 C 26 9.273438 21.597656 4.558594 16 4.050781 Z M 6.875 7.609375 C 5.09375 9.566406 4 12.15625 4 15 C 4 17.835938 5.089844 20.417969 6.855469 22.371094 L 7 22.15625 L 7 19.105469 C 6.363281 17.871094 6 16.480469 6 15 C 6 13.519531 6.363281 12.128906 7 10.894531 L 7 7.816406 Z M 6.875 7.609375 "/>
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 7 4 L 9 7.25 L 9 22.75 L 6.875 26 L 21.957031 26 L 25 22 L 14 22 L 14 4 Z M 16 4.050781 L 16 6.058594 C 20.492188 6.558594 24 10.375 24 15 C 24 16.847656 23.4375 18.570312 22.480469 20 L 24.785156 20 C 25.554688 18.496094 26 16.800781 26 15 C 26 9.273438 21.597656 4.558594 16 4.050781 Z M 6.875 7.609375 C 5.09375 9.566406 4 12.15625 4 15 C 4 17.835938 5.089844 20.417969 6.855469 22.371094 L 7 22.15625 L 7 19.105469 C 6.363281 17.871094 6 16.480469 6 15 C 6 13.519531 6.363281 12.128906 7 10.894531 L 7 7.816406 Z M 6.875 7.609375 " />
                                 </g>
                             </svg>
-
                         </a>
                         <!-- Valorant -->
                         <a class="flex items-center justify-center w-12 h-12 mt-2 rounded-full hover:bg-white hover:bg-opacity-5 hover:text-gray-300" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24px" height="24px">
                                 <g id="surface6550042">
-                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 16.191406 21 L 7.546875 21 L 0 12.375 L 0 2.320312 Z M 8.453125 19 L 11.808594 19 L 2 7.679688 L 2 11.625 Z M 21.535156 16 L 13.953125 16 L 24 3.085938 L 24 12.300781 Z M 18.042969 14 L 20.464844 14 L 22 11.695312 L 22 8.914062 Z M 18.042969 14 "/>
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 16.191406 21 L 7.546875 21 L 0 12.375 L 0 2.320312 Z M 8.453125 19 L 11.808594 19 L 2 7.679688 L 2 11.625 Z M 21.535156 16 L 13.953125 16 L 24 3.085938 L 24 12.300781 Z M 18.042969 14 L 20.464844 14 L 22 11.695312 L 22 8.914062 Z M 18.042969 14 " />
                                 </g>
                             </svg>
                         </a>
@@ -70,8 +70,8 @@
                         <a class="relative flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-white hover:bg-opacity-5 hover:text-gray-300" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="30px" height="30px">
                                 <g id="surface6557498">
-                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 24 43.996094 L 11.476562 38.957031 L 10.492188 28.425781 L 11.011719 27.875 C 11.601562 27.253906 11.925781 26.445312 11.925781 25.597656 C 11.925781 24.523438 11.421875 23.542969 10.539062 22.910156 L 9.929688 22.46875 L 8.519531 7.398438 L 15.949219 4 L 32.046875 4 L 39.480469 7.398438 L 38.066406 22.46875 L 37.457031 22.910156 C 36.578125 23.542969 36.070312 24.523438 36.070312 25.597656 C 36.070312 26.445312 36.394531 27.253906 36.984375 27.875 L 37.507812 28.425781 L 36.519531 38.957031 Z M 14.507812 36.605469 L 24 40.425781 L 33.488281 36.605469 L 34.148438 29.578125 C 33.296875 28.433594 32.835938 27.046875 32.835938 25.597656 C 32.835938 23.726562 33.625 21.945312 34.980469 20.691406 L 36.035156 9.460938 L 31.359375 7.324219 L 16.640625 7.324219 L 11.964844 9.460938 L 13.019531 20.691406 C 14.371094 21.945312 15.164062 23.726562 15.164062 25.597656 C 15.164062 27.046875 14.703125 28.433594 13.851562 29.578125 Z M 14.507812 36.605469 "/>
-                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 31.417969 36 L 30.359375 33.351562 L 26.980469 23.695312 C 29.449219 20.84375 30.09375 18.023438 30.09375 15.863281 C 30.09375 11.839844 27.179688 10.050781 25.019531 10.050781 L 21.882812 10.039062 L 21.882812 10.035156 L 16.582031 10.035156 L 18.171875 13.214844 L 18.171875 33.351562 L 17.109375 36 L 22.941406 36 L 21.878906 33.351562 L 21.878906 27.863281 C 22.011719 27.769531 22.125 27.691406 22.15625 27.671875 C 22.886719 27.222656 23.550781 26.761719 24.160156 26.300781 L 26.648438 33.347656 L 26.121094 36 Z M 21.878906 24.039062 L 21.878906 13 L 24.652344 13 C 25.589844 13 26.914062 13.621094 26.914062 15.648438 C 26.914062 18.675781 25.222656 21.636719 21.878906 24.039062 Z M 21.878906 24.039062 "/>
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 24 43.996094 L 11.476562 38.957031 L 10.492188 28.425781 L 11.011719 27.875 C 11.601562 27.253906 11.925781 26.445312 11.925781 25.597656 C 11.925781 24.523438 11.421875 23.542969 10.539062 22.910156 L 9.929688 22.46875 L 8.519531 7.398438 L 15.949219 4 L 32.046875 4 L 39.480469 7.398438 L 38.066406 22.46875 L 37.457031 22.910156 C 36.578125 23.542969 36.070312 24.523438 36.070312 25.597656 C 36.070312 26.445312 36.394531 27.253906 36.984375 27.875 L 37.507812 28.425781 L 36.519531 38.957031 Z M 14.507812 36.605469 L 24 40.425781 L 33.488281 36.605469 L 34.148438 29.578125 C 33.296875 28.433594 32.835938 27.046875 32.835938 25.597656 C 32.835938 23.726562 33.625 21.945312 34.980469 20.691406 L 36.035156 9.460938 L 31.359375 7.324219 L 16.640625 7.324219 L 11.964844 9.460938 L 13.019531 20.691406 C 14.371094 21.945312 15.164062 23.726562 15.164062 25.597656 C 15.164062 27.046875 14.703125 28.433594 13.851562 29.578125 Z M 14.507812 36.605469 " />
+                                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(93.333334%,93.333334%,93.333334%);fill-opacity:1;" d="M 31.417969 36 L 30.359375 33.351562 L 26.980469 23.695312 C 29.449219 20.84375 30.09375 18.023438 30.09375 15.863281 C 30.09375 11.839844 27.179688 10.050781 25.019531 10.050781 L 21.882812 10.039062 L 21.882812 10.035156 L 16.582031 10.035156 L 18.171875 13.214844 L 18.171875 33.351562 L 17.109375 36 L 22.941406 36 L 21.878906 33.351562 L 21.878906 27.863281 C 22.011719 27.769531 22.125 27.691406 22.15625 27.671875 C 22.886719 27.222656 23.550781 26.761719 24.160156 26.300781 L 26.648438 33.347656 L 26.121094 36 Z M 21.878906 24.039062 L 21.878906 13 L 24.652344 13 C 25.589844 13 26.914062 13.621094 26.914062 15.648438 C 26.914062 18.675781 25.222656 21.636719 21.878906 24.039062 Z M 21.878906 24.039062 " />
                                 </g>
                             </svg>
                         </a>
@@ -84,20 +84,55 @@
                     </a>
                 </div>
                 <!-- Left Sidebar End  -->
-
                 <!-- Main Content -->
-                <div class=" absolute inset-y-80 left-40 flex justify-center items-center">
-                    <div class="container">
-                        <div class="bg-black bg-opacity-80 h-96 w-96 rounded-lg">
-                            <div class="bg-blue-100 rounded-full h-24 w-24 flex items-center justify-center">
-                                circle
+                <div class="fixed top-40 inset-y-0 left-64 flex justify-center items-center">
+                    <div class="container space-y-4">
+                        <h1 class="text-4xl font-mono text-white font-bold">LEAGUE OF LEGENDS</h1>
+                        <div class="bg-blue-100 rounded-full h-14 w-24 flex items-center justify-center"> PLAY </div>
+                        <!-- Match History -->
+                        <div class="overflow-hidden p-10 bg-black bg-opacity-80 h-96 w-300 rounded-lg">
+                            <!-- Card -->
+                            <div class=" overflow-hidden relative bg-blue-900 bg-opacity-50 rounded-lg h-24 w-full flex items-center justify-center">
+                                <!-- -->
+                                <div class="left-2 p-5 absolute grid grid-flow-col-dense grid-flow-row grid-rows-2 grid-cols-10 gap-1">
+                                    <div class="col-span-1 row-span-2 text-white font-mono">
+                                        <h1>VICTORY</h1>
+                                        <h1>^ 18 LP</h1>
+                                        <h1>RANKED SOLO</h1>
+                                    </div>
+                                    <div class="row-span-2 col-span-2 bg-white rounded-full h-20 w-20 flex align-middle m-auto items-center justify-center">
+                                        <img class="rounded-full" src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon{summonerIcon}.png" alt="">
+                                    </div>
+                                    <div class="col-span-2 row-span-2 grid grid-cols-2">
+                                        <div class="m-auto space-y-1">
+                                            <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                            <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        </div>
+                                        <div class=" m-auto space-y-1">
+                                            <img class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center" src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon{summonerIcon}.png" alt="" />
+                                            <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-span-6 grid grid-cols-6 gap-2">
+                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                    </div>
+                                    <div class="col-span-6 grid grid-cols-3 text-white font-mono">
+                                        <h1>5/2/7</h1>
+                                        <h1>7.00 KDA</h1>
+                                        <h1>204 CS</h1>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- Main Content End -->
-
                 <!-- Right Sidebar Start -->
                 <div>
                     <div class="absolute inset-y-80 right-0 h-72 w-16">
@@ -105,7 +140,7 @@
                             <div class="h-full items-center grid grid-cols-1 whitespace-nowrap">
                                 <div class="flex space-x-16 rounded-full hover:bg-white hover:bg-opacity-5 items-center">
                                     <img class="h-12 w-12 border-2 border-black rounded-full" src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon2074.png" alt="icon-1">
-                                    <span class="">Homos in Paris</span>
+                                    <span class="">{summonerName}</span>
                                 </div>
                                 <div class="flex space-x-16 rounded-full hover:bg-white hover:bg-opacity-5 items-center">
                                     <img class="h-12 w-12 border-2 border-black rounded-full" src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon2076.png" alt="icon-1">
