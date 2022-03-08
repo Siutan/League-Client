@@ -16,6 +16,12 @@ module.exports = {
                 '100': '30rem',
                 '200': '40rem',
                 '300': '50rem',
+            },
+            height: {
+                sm: '8px',
+                md: '16px',
+                lg: '24px',
+                xl: '480px',
             }
         }
     },

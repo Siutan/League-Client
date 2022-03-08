@@ -87,45 +87,364 @@
                 <!-- Main Content -->
                 <div class="fixed top-40 inset-y-0 left-64 flex justify-center items-center">
                     <div class="container space-y-4">
-                        <h1 class="text-4xl font-mono text-white font-bold">LEAGUE OF LEGENDS</h1>
-                        <div class="bg-blue-100 rounded-full h-14 w-24 flex items-center justify-center"> PLAY </div>
+                        <h1 class="text-4xl font-mono text-white font-extrabold">LEAGUE OF LEGENDS</h1>
+                        <div class="bg-blue-100 space-x-2 rounded-full h-14 w-28 flex items-center justify-center">
+                            <img class="h-8 w-8" src="../public/img/play_btn.png"  alt=""/>
+                            <span class="text-lg font-extrabold leading-none">PLAY</span>
+                        </div>
                         <!-- Match History -->
-                        <div class="overflow-hidden p-10 bg-black bg-opacity-80 h-96 w-300 rounded-lg">
-                            <!-- Card -->
-                            <div class=" overflow-hidden relative bg-blue-900 bg-opacity-50 rounded-lg h-24 w-full flex items-center justify-center">
-                                <!-- -->
-                                <div class="left-2 p-5 absolute grid grid-flow-col-dense grid-flow-row grid-rows-2 grid-cols-10 gap-1">
-                                    <div class="col-span-1 row-span-2 text-white font-mono">
-                                        <h1>VICTORY</h1>
-                                        <h1>^ 18 LP</h1>
-                                        <h1>RANKED SOLO</h1>
-                                    </div>
-                                    <div class="row-span-2 col-span-2 bg-white rounded-full h-20 w-20 flex align-middle m-auto items-center justify-center">
-                                        <img class="rounded-full" src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon{summonerIcon}.png" alt="">
-                                    </div>
-                                    <div class="col-span-2 row-span-2 grid grid-cols-2">
-                                        <div class="m-auto space-y-1">
-                                            <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                            <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                        <div class="overflow-hidden p-10 bg-black bg-opacity-80 h-xl w-300 rounded-lg">
+                            <!-- Match Card -->
+                            <div class=" overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-lg h-28 w-full ">
+                                <div class="relative text-white flex flex-wrap px-5 py-3">
+                                    <div>
+                                        <div class="flex">
+                                            <div class="flex flex-col items-center justify-end">
+                                                <div class="h-6 text-lg font-extrabold leading-none text-teal-500 uppercase">Kennen</div>
+                                                <div class="w-10 text-xs font-extrabold text-center text-teal-500">LVL 15</div>
+                                                <div class="relative z-30 flex items-end h-6 text-sm font-extrabold leading-none text-white">DRAFT 5vs5</div>
+                                            </div>
+                                            <img class="w-20 h-20 ml-2 rounded-full justify-center items-center bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/85.png" alt=""/>
+                                            <div class="flex flex-col justify-around ml-2">
+                                                <img class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/summoner_flash.png" alt=""/>
+                                                <img class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/summoner_teleport.png" alt=""/>
+                                            </div>
+                                            <div  class="flex flex-col justify-around ml-1">
+                                                <img  class="w-6 h-6 rounded-md bg-blue-1000" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png" alt="" />
+                                                <img  class="w-6 h-6 rounded-md bg-blue-1000" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7203_whimsy.png" alt=""/>
+                                            </div>
+                                            <div class="flex flex-col items-center justify-center">
+                                                <div  class="pl-10 text-xl font-extrabold text-teal-500">
+                                                    <span >2</span>
+                                                    <span >/</span>
+                                                    <span >3</span>
+                                                    <span >/</span>
+                                                    <span >1</span>
+                                                </div>
+                                                <div  class="relative z-30 mt-2 text-xs font-extrabold text-white">1 KDA</div>
+                                            </div>
+                                            <div  class="pl-10 flex items-center py-6 second">
+                                                <div   class="flex items-6-rows flex-wrap">
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3152_mage_t4_hextechrocketbelt.png&quot;);">
+                                                                    <div  class="w-full h-full rounded-md mythic-inside"></div>
+                                                                </div>
+                                                                <div  class="absolute rounded-md mythic mythic-xl"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3157_mage_t3_zhonyashourglass.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/2031_class_t1_refillablepotion.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/1056_mage_t1_doransring.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3158_class_t2_ionianbootsoflucidity.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/1058_mage_t1_largerod.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="relative ml-4">
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold text-teal-300">181 <span class="font-normal">cs</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold gold">8.9k</div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold damage">7.6k</div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold kp">15%</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class=" m-auto space-y-1">
-                                            <img class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center" src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon{summonerIcon}.png" alt="" />
-                                            <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Match Card -->
+                            <div class=" top-10 overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-lg h-28 w-full ">
+                                <div class="relative  text-white flex flex-wrap px-5 py-3">
+                                    <div >
+                                        <div  class="flex">
+                                            <div  class="flex flex-col items-center justify-end">
+                                                <div  class="h-6 text-lg font-extrabold leading-none text-teal-500 uppercase">Kennen</div>
+                                                <div  class="w-10 text-xs font-extrabold text-center text-teal-500">LVL 15</div>
+                                                <div  class="relative z-30 flex items-end h-6 text-sm font-extrabold leading-none text-white">DRAFT 5vs5</div>
+                                            </div>
+                                            <img class="w-20 h-20 ml-2 rounded-full justify-center items-center bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/85.png" alt=""/>
+                                            <div class="flex flex-col justify-around ml-2">
+                                                <img class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/summoner_flash.png" alt=""/>
+                                                <img class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/summoner_teleport.png" alt=""/>
+                                            </div>
+                                            <div  class="flex flex-col justify-around ml-1">
+                                                <img  class="w-6 h-6 rounded-md bg-blue-1000" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png" alt="" />
+                                                <img  class="w-6 h-6 rounded-md bg-blue-1000" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7203_whimsy.png" alt=""/>
+                                            </div>
+                                            <div  class="flex flex-col items-center justify-center">
+                                                <div  class="pl-10 text-xl font-extrabold text-teal-500">
+                                                    <span >2</span>
+                                                    <span >/</span>
+                                                    <span >3</span>
+                                                    <span >/</span>
+                                                    <span >1</span>
+                                                </div>
+                                                <div  class="relative z-30 mt-2 text-xs font-extrabold text-white">1 KDA</div>
+                                            </div>
+                                            <div  class="pl-10 flex items-center py-6 second">
+                                                <div   class="flex items-6-rows flex-wrap">
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3152_mage_t4_hextechrocketbelt.png&quot;);">
+                                                                    <div  class="w-full h-full rounded-md mythic-inside"></div>
+                                                                </div>
+                                                                <div  class="absolute rounded-md mythic mythic-xl"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3157_mage_t3_zhonyashourglass.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/2031_class_t1_refillablepotion.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/1056_mage_t1_doransring.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3158_class_t2_ionianbootsoflucidity.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/1058_mage_t1_largerod.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="relative ml-4">
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold text-teal-300">181 <span class="font-normal">cs</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold gold">8.9k</div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold damage">7.6k</div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold kp">15%</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class=" col-span-6 grid grid-cols-6 gap-2">
-                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                        <div class=" bg-white rounded-lg h-10 w-10 flex items-center justify-center"></div>
-                                    </div>
-                                    <div class="col-span-6 grid grid-cols-3 text-white font-mono">
-                                        <h1>5/2/7</h1>
-                                        <h1>7.00 KDA</h1>
-                                        <h1>204 CS</h1>
+                                </div>
+                            </div>
+                            <!-- Match Card -->
+                            <div class=" top-20 overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-lg h-28 w-full ">
+                                <div class="relative text-white flex flex-wrap px-5 py-3">
+                                    <div >
+                                        <div  class="flex">
+                                            <div  class="flex flex-col items-center justify-end">
+                                                <div  class="h-6 text-lg font-extrabold leading-none text-teal-500 uppercase">Kennen</div>
+                                                <div  class="w-10 text-xs font-extrabold text-center text-teal-500">LVL 15</div>
+                                                <div  class="relative z-30 flex items-end h-6 text-sm font-extrabold leading-none text-white">DRAFT 5vs5</div>
+                                            </div>
+                                            <img class="w-20 h-20 ml-2 rounded-full justify-center items-center bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/85.png" alt=""/>
+                                            <div class="flex flex-col justify-around ml-2">
+                                                <img class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/summoner_flash.png" alt=""/>
+                                                <img class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/data/spells/icons2d/summoner_teleport.png" alt=""/>
+                                            </div>
+                                            <div  class="flex flex-col justify-around ml-1">
+                                                <img  class="w-6 h-6 rounded-md bg-blue-1000" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/domination/electrocute/electrocute.png" alt="" />
+                                                <img  class="w-6 h-6 rounded-md bg-blue-1000" src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7203_whimsy.png" alt=""/>
+                                            </div>
+                                            <div  class="flex flex-col items-center justify-center">
+                                                <div  class="pl-10 text-xl font-extrabold text-teal-500">
+                                                    <span >2</span>
+                                                    <span >/</span>
+                                                    <span >3</span>
+                                                    <span >/</span>
+                                                    <span >1</span>
+                                                </div>
+                                                <div  class="relative z-30 mt-2 text-xs font-extrabold text-white">1 KDA</div>
+                                            </div>
+                                            <div  class="pl-10 flex items-center py-6 second">
+                                                <div   class="flex items-6-rows flex-wrap">
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3152_mage_t4_hextechrocketbelt.png&quot;);">
+                                                                    <div  class="w-full h-full rounded-md mythic-inside"></div>
+                                                                </div>
+                                                                <div  class="absolute rounded-md mythic mythic-xl"></div>
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3157_mage_t3_zhonyashourglass.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/2031_class_t1_refillablepotion.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/1056_mage_t1_doransring.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/3158_class_t2_ionianbootsoflucidity.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                    <div >
+                                                        <div aria-haspopup="true">
+                                                            <div  class="relative">
+                                                                <div  class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" style="background-image: url(&quot;https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/1058_mage_t1_largerod.png&quot;);">
+                                                                    <!---->
+                                                                </div>
+                                                                <!---->
+                                                            </div>
+                                                        </div>
+                                                        <!---->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="relative ml-4">
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold text-teal-300">181 <span class="font-normal">cs</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold gold">8.9k</div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold damage">7.6k</div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <div class="ml-1 text-sm font-bold kp">15%</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +454,7 @@
                 <!-- Main Content End -->
                 <!-- Right Sidebar Start -->
                 <div>
-                    <div class="absolute inset-y-80 right-0 h-72 w-16">
+                    <div class="absolute inset-y-96 right-0 h-72 w-16">
                         <div class="hover:w-80 hover:bg-opacity-90 overflow-visible duration-1000 absolute border-opacity-40 border-t-2 border-l-2 border-b-2 text-white p-3 bg-opacity-50 border-black bg-black rounded-l-3xl inset-y-0 right-0 w-20">
                             <div class="h-full items-center grid grid-cols-1 whitespace-nowrap">
                                 <div class="flex space-x-16 rounded-full hover:bg-white hover:bg-opacity-5 items-center">
