@@ -22,6 +22,21 @@ module.exports = {
                 md: '16px',
                 lg: '24px',
                 xl: '480px',
+            },
+            colors: {
+                transparent: 'transparent',
+                current: 'currentColor',
+                teal: {
+                    100: '#00e6e6',
+                    200: '#00e6e6',
+                    300: '#00d6d6',
+                    400: '#00cccc',
+                    500: '#00bdbd',
+                    600: '#00b3b3',
+                    700: '#00a3a3',
+                    800: '#009999',
+                    900: '#008a8a',
+                }
             }
         }
     },
