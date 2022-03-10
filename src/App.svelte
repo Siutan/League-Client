@@ -37,9 +37,8 @@
     }
 
     // Get win or loss
-    function getWinLoss(x) {
-        console.log(summonerOverview.matchesDetails[x].result)
-        if (summonerOverview.matchesDetails[x].result === "Win") {
+    function getWinLoss(matchIndex) {
+        if (summonerOverview.matchesDetails[matchIndex].result === "Win") {
             return "bg-blue-900"
         } else {
             return "bg-red-900"
@@ -69,7 +68,7 @@
     }
 
     // Get Items
-    function getItems(matchIndex, itemIndex){
+    function getItems(itemIndex, matchIndex){
         return summonerOverview.matchesDetails[matchIndex].items[itemIndex].image;
     }
 
@@ -81,7 +80,6 @@
     // Get Gold
     function getGold(matchIndex) {
         let gold = summonerOverview.matchesDetails[matchIndex].stats.gold;
-        console.log(gold);
         return formatThousand(gold);
     }
 
@@ -162,7 +160,7 @@
                 </div>
                 <!-- Left Sidebar End  -->
                 <!-- Main Content -->
-                <div class="fixed top-40 inset-y-0 left-64 flex justify-center items-center">
+                <div class="fixed top-40 inset-y-0 left-48 flex justify-center items-center">
                     <div class="container space-y-4">
                         <h1 class="text-4xl font-mono text-white font-extrabold">LEAGUE OF LEGENDS</h1>
                         <div class="bg-blue-100 space-x-2 rounded-full h-14 w-28 flex items-center justify-center">
@@ -170,9 +168,9 @@
                             <span class="text-lg font-extrabold leading-none">PLAY</span>
                         </div>
                         <!-- Match History -->
-                        <div class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-lg">
+                        <div class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-6xl">
                             <!-- Match Card -->
-                            <div class=" overflow-hidden justify-center items-center place-content-center relative {getWinLoss(0)} bg-opacity-50 rounded-lg h-28 w-full ">
+                            <div class=" overflow-hidden justify-center items-center place-content-center relative {getWinLoss(0)} bg-opacity-50 rounded-5xl h-28 w-full ">
                                 <div class="relative text-white flex flex-wrap px-5 py-3">
                                     <div>
                                         <div class="flex">
@@ -212,35 +210,35 @@
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 1)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 0)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 2)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(2, 0)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(3, 0)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 4)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(4, 0)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 5)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(5, 0)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -265,7 +263,7 @@
                                 </div>
                             </div>
                             <!-- Match Card -->
-                            <div class=" overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-lg h-28 w-full ">
+                            <div class=" overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-5xl h-28 w-full ">
                                 <div class="relative  text-white flex flex-wrap px-5 py-3">
                                     <div>
                                         <div class="flex">
@@ -298,7 +296,7 @@
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 0)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 1)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -312,28 +310,28 @@
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 2)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(2, 1)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(3, 1)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 4)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(4, 1)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 5)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(5, 1)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -359,7 +357,7 @@
                                 </div>
                             </div>
                             <!-- Match Card -->
-                            <div class="overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-lg h-28 w-full ">
+                            <div class="overflow-hidden justify-center items-center place-content-center relative bg-blue-900 bg-opacity-50 rounded-5xl h-28 w-full ">
                                 <div class="relative text-white flex flex-wrap px-5 py-3">
                                     <div>
                                         <div class="flex">
@@ -379,55 +377,55 @@
                                             </div>
                                             <div class="flex flex-col items-center justify-center">
                                                 <div class="pl-10 text-xl font-extrabold text-teal-500">
-                                                    <span>2</span>
+                                                    <span>{getStats("kills", 2)}</span>
                                                     <span>/</span>
-                                                    <span>3</span>
+                                                    <span class="text-red-500">{getStats("deaths", 2)}</span>
                                                     <span>/</span>
-                                                    <span>1</span>
+                                                    <span>{getStats("assists", 2)}</span>
                                                 </div>
-                                                <div class="relative z-30 mt-2 text-xs font-extrabold text-white">1 KDA</div>
+                                                <div class="relative z-30 mt-2 text-xs font-extrabold text-white">{getStats("kda", 2)} KDA</div>
                                             </div>
                                             <div class="pl-10 flex items-center py-6 second">
                                                 <div class="flex items-6-rows flex-wrap">
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 2)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(1, 2)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(2, 2)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(3, 2)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(4, 2)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <div aria-haspopup="true">
                                                             <div class="relative">
-                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(0, 3)} alt="" />
+                                                                <img class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer" draggable="false" src={getItems(5, 2)} alt="" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -435,17 +433,17 @@
                                             </div>
                                             <div class="relative ml-4">
                                                 <div class="flex items-center">
-                                                    <div class="ml-1 text-sm font-bold text-teal-300">181 <span class="font-normal">cs</span>
+                                                    <div class="ml-1 text-sm font-bold text-teal-300">{getStats("minions", 2)} <span class="font-normal">cs</span>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <div class="ml-1 text-sm font-bold gold">8.9k</div>
+                                                    <div class="ml-1 text-sm font-bold gold">{getGold(2)}</div>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <div class="ml-1 text-sm font-bold damage">7.6k</div>
+                                                    <div class="ml-1 text-sm font-bold damage">{getDamage(2)}</div>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <div class="ml-1 text-sm font-bold kp">15%</div>
+                                                    <div class="ml-1 text-sm font-bold kp">{getStats("kp", 2)}</div>
                                                 </div>
                                             </div>
                                         </div>
