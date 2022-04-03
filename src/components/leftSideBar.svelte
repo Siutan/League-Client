@@ -1,7 +1,25 @@
+<script>
+  import Modal from "./modal.svelte";
+  import accountsModal from "./accountsModal.svelte";
+
+  let showModal = false;
+  let modalContent;
+
+  // pass in component as parameter and toggle modal state
+  function toggleModal(component) {
+    modalContent = component;
+    showModal = !showModal;
+  }
+</script>
+
 <!-- Left Sidebar Start -->
+
+
+
 <div
   class="flex flex-col items-center w-16 h-screen bg-black bg-opacity-50 text-gray-100 border-r-4 border-opacity-40 border-black"
 >
+
   <!-- Logo -->
   <a class="flex items-center justify-center mt-10" href="#">
     <svg
@@ -38,6 +56,9 @@
       </svg>
     </a>
   </div>
+  {#if showModal}
+    <Modal  on:click={toggleModal} {modalContent} />
+  {/if}
   <!-- Bottom Icons -->
   <div class="flex flex-col items-center mt-20">
     <!-- League of Legends -->
@@ -104,8 +125,10 @@
   </div>
   <!-- Settings -->
   <a
+    id="modalBtn"
     class="flex items-center justify-center w-16 h-16 mt-auto rounded-full hover:bg-white hover:bg-opacity-5 hover:bg-gray-900"
     href="#"
+    on:click={() => (toggleModal(accountsModal))}
   >
     <svg
       class="w-6 h-6 stroke-current"
@@ -122,5 +145,13 @@
       />
     </svg>
   </a>
+
+
 </div>
+
+
+
+
 <!-- Left Sidebar End  -->
+<style>
+</style>

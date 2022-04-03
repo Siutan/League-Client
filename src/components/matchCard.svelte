@@ -1,9 +1,11 @@
 <div
-  class=" overflow-hidden justify-center items-center place-content-center relative bg-opacity-50 rounded-3xl h-28 w-full place-items-center bg-blue-900 "
+  class=" overflow-hidden animate-pulse justify-center items-center place-content-center relative bg-opacity-50 rounded-3xl h-28 w-full place-items-center "
 >
-  <div class=" bg-opacity-50 bg-blue-900 text-white flex flex-wrap place-content-center h-full">
+
+  <div class=" bg-opacity-50 bg-red-100 text-white flex flex-wrap place-content-center h-full">
     <div>
       <div class="flex">
+        <!-- Champion Name -->
         <div class="flex flex-col items-center justify-end">
           <div
             class="h-6 text-base font-extrabold leading-none text-teal-500 uppercase"

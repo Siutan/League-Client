@@ -15,7 +15,7 @@
   let summonerOverview;
   let perks;
 
-  async function getsums() {
+  async function getData() {
     // summoner Basic
     let basicData = await fetch("https://api.leaguestats.gg/summoner/basic", {
       method: "POST", // or 'PUT'
@@ -25,7 +25,6 @@
       body: JSON.stringify({ summoner: "homos in paris", region: "oc1" }),
     });
     summonerBasic = await basicData.json();
-    console.log(summonerBasic);
 
     // sumoner Overview
     let overviewData = await fetch(
@@ -44,7 +43,6 @@
       }
     );
     summonerOverview = await overviewData.json();
-    console.log(summonerOverview);
 
     //summoner perks
     let getPerks = await fetch("https://api.leaguestats.gg/cdragon/runes");
@@ -60,9 +58,9 @@
   // Get win or loss
   function getWinLoss(matchIndex) {
     if (summonerOverview.matchesDetails[matchIndex].result === "Win") {
-      return "bg-blue-900";
+      return "bg-teal-900";
     } else {
-      return "bg-red-900";
+      return "bg-sienna-100";
     }
   }
 
@@ -129,29 +127,29 @@
   // get runes
   function getPerks(perkType, matchIndex) {
     if (perkType === "primary") {
-
       try {
-        let perk = summonerOverview.matchesDetails[matchIndex].perks.selected[0];
+        let perk =
+          summonerOverview.matchesDetails[matchIndex].perks.selected[0];
         let primaryPerk = perks.perks[perk].icon;
         primaryPerk = primaryPerk.substring(primaryPerk.indexOf("Styles/") + 1);
-        primaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${primaryPerk.toLowerCase()}`
+        primaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${primaryPerk.toLowerCase()}`;
         return primaryPerk;
       } catch (error) {
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
       }
-
     } else {
-
       try {
-        let perk = summonerOverview.matchesDetails[matchIndex].perks.secondaryStyle;
+        let perk =
+          summonerOverview.matchesDetails[matchIndex].perks.secondaryStyle;
         let secondaryPerk = perks.perkstyles[perk].icon;
-        secondaryPerk = secondaryPerk.substring(secondaryPerk.indexOf("Styles/") + 1);
-        secondaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${secondaryPerk.toLowerCase()}`
+        secondaryPerk = secondaryPerk.substring(
+          secondaryPerk.indexOf("Styles/") + 1
+        );
+        secondaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${secondaryPerk.toLowerCase()}`;
         return secondaryPerk;
       } catch (error) {
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
       }
-
     }
   }
 
@@ -224,10 +222,10 @@
               class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-6xl"
             >
               <!-- Match Card -->
-              {#await getsums()}
-                <BlankMatchCard/>
-                <BlankMatchCard/>
-                <BlankMatchCard/>
+              {#await getData()}
+                <BlankMatchCard />
+                <BlankMatchCard />
+                <BlankMatchCard />
               {:then pog}
                 {#each Array(3) as _, i}
                   <div
@@ -245,7 +243,6 @@
                               class="h-6 text-base font-extrabold leading-none text-teal-500 uppercase"
                             >
                               {getChampion("alias", i)}
-
                             </div>
                             <div
                               class="w-10 text-xs font-extrabold text-center text-teal-500"
