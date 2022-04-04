@@ -1,4 +1,10 @@
 <script>
+
+  //TODO:
+  // - Move the right side bar into its own component.
+  // - Make app read summoner names from savedData.json
+  // - start on the next dashboard component
+
   // imports
   export let summonerIcon;
   export let summonerLevel;
@@ -47,7 +53,6 @@
     //summoner perks
     let getPerks = await fetch("https://api.leaguestats.gg/cdragon/runes");
     perks = await getPerks.json();
-    console.log(perks);
   }
 
   // Get Champion Info
@@ -82,6 +87,9 @@
         return gameMode;
       case 450:
         gameMode = "ARAM";
+        return gameMode;
+      case 1020:
+        gameMode = "One for All";
         return gameMode;
     }
   }
@@ -219,7 +227,7 @@
             </div>
             <!-- Match History -->
             <div
-              class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-6xl"
+              class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-4xl"
             >
               <!-- Match Card -->
               {#await getData()}

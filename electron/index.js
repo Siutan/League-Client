@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { join } = require("path");
+const fs = require("fs");
 
 // check if app is running in development mode
 const isDev = !app.isPackaged;
@@ -14,6 +15,7 @@ app.whenReady().then(() => {
     webPreferences: {
       preload: join(__dirname + "/preload.js"),
       nodeIntegration: true,
+      contextIsolation: true,
     },
   });
 
@@ -27,6 +29,7 @@ app.whenReady().then(() => {
   // open dev tools if in development mode
   if (isDev) {
     win.webContents.openDevTools();
+    console.log(app.getPath("userData"));
   }
 });
 
@@ -45,4 +48,15 @@ ipcMain.on("titlebar", (event, arg) => {
       window.unmaximize(); //check if window is maximized, if so, unmaximize
     else window.maximize(); // if not, maximize
   }
+});
+
+let configPath = app.getPath("userData") + "\\savedData.json";
+
+ipcMain.handle("getPath", () => {
+  return fs.readFileSync(configPath, "utf8");
+});
+
+ipcMain.on("save-file", (ev, options) => {
+  fs.writeFileSync(configPath, options);
+  console.log(options);
 });

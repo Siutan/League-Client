@@ -6,3 +6,10 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.send("titlebar", action);
   },
 });
+
+// file read api
+contextBridge.exposeInMainWorld("electronAPI", {
+  getPath: () => ipcRenderer.invoke("getPath"),
+  // get form data from renderer
+  writeToFile: (options) => ipcRenderer.send("save-file", options),
+});
