@@ -1,16 +1,35 @@
 <script>
-
   //TODO:
+  // - Write to file only if previous accounts not found, if found, prompt overwrite.
   // - Move the right side bar into its own component.
+  // - Move Match Card into its own component.
   // - Make app read summoner names from savedData.json
-  // - start on the next dashboard component
+  // - Start on the next dashboard summoner stats component.
 
-  // imports
-  export let summonerIcon;
-  export let summonerLevel;
+  // props
   export let summonerName;
+
+  //imports
+  import { onMount } from "svelte";
   import LeftSidebar from "./components/leftSideBar.svelte";
-  import BlankMatchCard from "./components/matchCard.svelte";
+  import BlankMatchCard from "./components/matchCardSkeleton.svelte";
+
+  // get config
+  let appConfig = {};
+  let key = 0;
+
+  onMount(() => {
+    // get config data
+    window.electronAPI
+      .getPath()
+      .then((userDataPath) => {
+        appConfig = JSON.parse(userDataPath);
+        console.log(appConfig);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 
   //close btn
   function handleClose() {
@@ -31,8 +50,9 @@
       body: JSON.stringify({ summoner: "homos in paris", region: "oc1" }),
     });
     summonerBasic = await basicData.json();
+    console.log(summonerBasic);
 
-    // sumoner Overview
+    // summoner Overview
     let overviewData = await fetch(
       "https://api.leaguestats.gg/summoner/overview",
       {
@@ -49,10 +69,12 @@
       }
     );
     summonerOverview = await overviewData.json();
+    console.log(summonerOverview);
 
     //summoner perks
     let getPerks = await fetch("https://api.leaguestats.gg/cdragon/runes");
     perks = await getPerks.json();
+    console.log(perks);
   }
 
   // Get Champion Info
@@ -63,9 +85,9 @@
   // Get win or loss
   function getWinLoss(matchIndex) {
     if (summonerOverview.matchesDetails[matchIndex].result === "Win") {
-      return "bg-teal-900";
+      return "text-blue-500";
     } else {
-      return "bg-sienna-100";
+      return "text-red-500";
     }
   }
 
@@ -96,10 +118,55 @@
 
   // Get Stats
   function getStats(stat, matchIndex) {
-    if (stat === "level") {
-      return summonerOverview.matchesDetails[matchIndex].level;
-    } else {
-      return summonerOverview.matchesDetails[matchIndex].stats[stat];
+    // create switch case for each stat below
+    let base = summonerOverview.matchesDetails[matchIndex].stats;
+    switch (stat) {
+      case "kda":
+        return base.kills + "/" + base.deaths + "/" + base.assists;
+      case "kda-ratio":
+        return base["kda"];
+      case "level":
+        return summonerOverview.matchesDetails[matchIndex].level;
+      case "kp":
+        return base["kp"];
+      case "gold":
+        return formatThousand(base.gold);
+      case "damage":
+        return formatThousand(base.dmgChamp);
+      case "minions":
+        return base["minions"];
+      case "vision":
+        return base["vision"];
+      case "time":
+        return convertTime(summonerOverview.matchesDetails[matchIndex]["time"]);
+        case "date":
+        return timeAgo(summonerOverview.matchesDetails[matchIndex].date);
+    }
+  }
+// convert seconds into minutes + seconds to 2 seconds
+  function convertTime(time) {
+    let minutes = Math.floor(time / 60);
+    let seconds = (time  - minutes * 60);
+    return minutes + ":" + seconds;
+  }
+  function timeAgo(input) {
+    const date = (input instanceof Date) ? input : new Date(input);
+    const formatter = new Intl.RelativeTimeFormat('en');
+    const ranges = {
+      years: 3600 * 24 * 365,
+      months: 3600 * 24 * 30,
+      weeks: 3600 * 24 * 7,
+      days: 3600 * 24,
+      hours: 3600,
+      minutes: 60,
+      seconds: 1
+    };
+    const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+    for (let key in ranges) {
+      if (ranges[key] < Math.abs(secondsElapsed)) {
+        const delta = secondsElapsed / ranges[key];
+        return formatter.format(Math.round(delta), key);
+      }
     }
   }
 
@@ -120,69 +187,57 @@
       : Math.sign(num) * Math.abs(num);
   }
 
-  // Get Gold
-  function getGold(matchIndex) {
-    let gold = summonerOverview.matchesDetails[matchIndex].stats.gold;
-    return formatThousand(gold);
-  }
-
-  // Get Damage
-  function getDamage(matchIndex) {
-    let damage = summonerOverview.matchesDetails[matchIndex].stats.dmgChamp;
-    return formatThousand(damage);
-  }
-
-  // get runes
-  function getPerks(perkType, matchIndex) {
-    if (perkType === "primary") {
-      try {
-        let perk =
-          summonerOverview.matchesDetails[matchIndex].perks.selected[0];
-        let primaryPerk = perks.perks[perk].icon;
-        primaryPerk = primaryPerk.substring(primaryPerk.indexOf("Styles/") + 1);
-        primaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${primaryPerk.toLowerCase()}`;
-        return primaryPerk;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    } else {
-      try {
-        let perk =
-          summonerOverview.matchesDetails[matchIndex].perks.secondaryStyle;
-        let secondaryPerk = perks.perkstyles[perk].icon;
-        secondaryPerk = secondaryPerk.substring(
-          secondaryPerk.indexOf("Styles/") + 1
-        );
-        secondaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${secondaryPerk.toLowerCase()}`;
-        return secondaryPerk;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    }
-  }
-
-  //get summoner spells
-  function getSpells(spellIndex, matchIndex) {
-    if (spellIndex === 1) {
-      try {
-        return summonerOverview.matchesDetails[matchIndex].summonerSpell1.icon;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    } else if (spellIndex === 2) {
-      try {
-        return summonerOverview.matchesDetails[matchIndex].summonerSpell2.icon;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    }
-  }
+  // // get runes
+  // function getPerks(perkType, matchIndex) {
+  //   if (perkType === "primary") {
+  //     try {
+  //       let perk =
+  //         summonerOverview.matchesDetails[matchIndex].perks.selected[0];
+  //       let primaryPerk = perks.perks[perk].icon;
+  //       primaryPerk = primaryPerk.substring(primaryPerk.indexOf("Styles/") + 1);
+  //       primaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${primaryPerk.toLowerCase()}`;
+  //       return primaryPerk;
+  //     } catch (error) {
+  //       return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
+  //     }
+  //   } else {
+  //     try {
+  //       let perk =
+  //         summonerOverview.matchesDetails[matchIndex].perks.secondaryStyle;
+  //       let secondaryPerk = perks.perkstyles[perk].icon;
+  //       secondaryPerk = secondaryPerk.substring(
+  //         secondaryPerk.indexOf("Styles/") + 1
+  //       );
+  //       secondaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${secondaryPerk.toLowerCase()}`;
+  //       return secondaryPerk;
+  //     } catch (error) {
+  //       return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
+  //     }
+  //   }
+  // }
+  //
+  // //get summoner spells
+  // function getSpells(spellIndex, matchIndex) {
+  //   if (spellIndex === 1) {
+  //     try {
+  //       return summonerOverview.matchesDetails[matchIndex].summonerSpell1.icon;
+  //     } catch (error) {
+  //       return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
+  //     }
+  //   } else if (spellIndex === 2) {
+  //     try {
+  //       return summonerOverview.matchesDetails[matchIndex].summonerSpell2.icon;
+  //     } catch (error) {
+  //       return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
+  //     }
+  //   }
+  // }
 </script>
 
 <main class="overflow-hidden">
-  <div class="bg-gray-500 flex flex-col h-screen bg-background-1">
-    <div class="relative h-5" style="-webkit-app-region: drag">
-      <span class="absolute inset-y-1 right-2">
+  <div class="bg-gray-500 flex flex-col h-screen bg-gradient-to-b from-black via-palette-600 to-palette-800">
+    <div class="relative h-10 bg-opacity-50" style="-webkit-app-region: drag">
+      <span class="absolute inset-y-0 right-2">
         <button
           on:click={handleClose}
           type="button"
@@ -227,7 +282,7 @@
             </div>
             <!-- Match History -->
             <div
-              class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-4xl"
+              class="overflow-hidden p-8 space-y-8 bg-palette-900 bg-opacity-50 h-xl w-300 rounded-xl"
             >
               <!-- Match Card -->
               {#await getData()}
@@ -237,195 +292,105 @@
               {:then pog}
                 {#each Array(3) as _, i}
                   <div
-                    class=" overflow-hidden justify-center items-center place-content-center relative bg-opacity-50 rounded-3xl h-28 w-full place-items-center {getWinLoss(
-                      i
-                    )} "
+                    class="relative bg-palette-900 px-5 pt-5 pb-5 shadow-xl ring-1 ring-palette-600 sm:mx-auto sm:rounded-lg sm:px-8"
                   >
-                    <div
-                      class=" text-white flex flex-wrap place-content-center h-full"
-                    >
-                      <div>
-                        <div class="flex">
-                          <div class="flex flex-col items-center justify-end">
-                            <div
-                              class="h-6 text-base font-extrabold leading-none text-teal-500 uppercase"
-                            >
-                              {getChampion("alias", i)}
-                            </div>
-                            <div
-                              class="w-10 text-xs font-extrabold text-center text-teal-500"
-                            >
-                              LVL {getStats("level", i)}
-                            </div>
-                            <div
-                              class="relative z-30 flex items-end h-6 text-sm font-extrabold text-white"
-                            >
-                              {getGamemode(i)}
-                            </div>
-                          </div>
+                    <div class="relative mx-auto">
+                      <div class="grid grid-cols-6 gap">
+                        <!-- Champion Icon and Lane -->
+                        <div
+                          class=" w-20 h-20 overflow-hidden border-solid border-2 border-palette-600 rounded-lg"
+                        >
                           <img
-                            class=" object-fill w-20 h-20 ml-2 rounded-full justify-center crop-champion items-center bg-blue-900"
-                            draggable="false"
                             src={getChampion("icon", i)}
-                            alt=""
+                            alt="Champion Icon"
                           />
-                          <div class="flex flex-col justify-around ml-2">
-                            <img
-                              class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900"
-                              draggable="false"
-                              src={getSpells(1, i)}
-                              alt=""
-                            />
-                            <img
-                              class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900"
-                              draggable="false"
-                              src={getSpells(2, i)}
-                              alt=""
-                            />
-                          </div>
-                          <div class="flex flex-col justify-around ml-1">
-                            <img
-                              class="w-6 h-6 rounded-md bg-blue-1000"
-                              draggable="false"
-                              src={getPerks("primary", i)}
-                              alt=""
-                            />
-                            <img
-                              class="w-6 h-6 rounded-md bg-blue-1000"
-                              draggable="false"
-                              src={getPerks("secondary", i)}
-                              alt=""
-                            />
-                          </div>
-                          <div
-                            class="flex flex-col items-center justify-center"
+                          <img
+                            class="absolute w-8 inset-14 bg-palette-900 rounded-md"
+                            src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png"
+                            alt="Champion Icon"
+                          />
+                        </div>
+                        <!-- Outcome and Gamemode -->
+                        <div class="pl-5 pt-3 text-center">
+                          <p class=" font-extrabold {getWinLoss(i)}">VICTORY</p>
+                          <p class="text-gray-500 font-semibold">
+                            {getGamemode(i)}
+                          </p>
+                        </div>
+                        <!-- KDA -->
+                        <div class="pl-5 pt-3 text-center">
+                          <p class="text-gray-200 font-bold">
+                            {getStats("kda", i)}
+                          </p>
+                          <p
+                            class="inline-block text-gray-400 text-xs font-thin"
                           >
-                            <div
-                              class="pl-8 text-base font-extrabold text-teal-500"
-                            >
-                              <span>{getStats("kills", i)}</span>
-                              <span>/</span>
-                              <span class="text-red-500"
-                                >{getStats("kills", i)}</span
-                              >
-                              <span>/</span>
-                              <span>{getStats("assists", i)}</span>
-                            </div>
-                            <div
-                              class="relative pl-3 z-30 mt-2 text-xs font-extrabold text-white"
-                            >
-                              {getStats("kda", i)} KDA
-                            </div>
-                          </div>
-                          <div class="pl-10 flex items-center py-6 second">
-                            <div class="flex items-6-rows flex-wrap">
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(0, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(1, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(2, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(3, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(4, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(5, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="relative ml-4">
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold text-teal-500">
-                                {getStats("minions", i)}
-                              </div>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold gold">
-                                {getGold(i)}
-                              </div>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold damage">
-                                {getDamage(i)}
-                              </div>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold kp">
-                                {getStats("kp", i)}%
-                              </div>
-                            </div>
-                          </div>
+                            {getStats("kda-ratio", i)} KDA
+                          </p>
+                        </div>
+                        <!-- Items -->
+                        <div
+                          class=" w-24 h-20 grid grid-cols-3 grid-rows-2 gap-x-1 gap-y-0"
+                        >
+                          <img
+                            class="rounded-lg"
+                            src={getItems("0", i)}
+                            alt="Item 1"
+                          />
+                          <img
+                            class="rounded-lg"
+                            src={getItems("1", i)}
+                            alt="Item 2"
+                          />
+                          <img
+                            class="rounded-lg"
+                            src={getItems("2", i)}
+                            alt="Item 3"
+                          />
+                          <img
+                            class="rounded-lg"
+                            src={getItems("3", i)}
+                            alt="Item 4"
+                          />
+                          <img
+                            class="rounded-lg"
+                            src={getItems("4", i)}
+                            alt="Item 5"
+                          />
+                          <img
+                            class="rounded-lg"
+                            src={getItems("5", i)}
+                            alt="Item 6"
+                          />
+                        </div>
+                        <!-- CS + Gold + DMG + KP -->
+                        <div
+                          class="pl-5 text-left text-xs font-bold grid grid-cols-1 grid-rows-4 uppercase"
+                        >
+                          <p class="text-green-500">
+                            {getStats("minions", i)} CS
+                          </p>
+                          <p class="text-yellow-600 ">{getStats("gold", i)}</p>
+                          <p class="text-red-800 ">{getStats("damage", i)}</p>
+                          <p class="text-purple-700">{getStats("kp", i)}% KP</p>
+                        </div>
+                        <!-- Gametime -->
+                        <div
+                          class="pt-3 text-gray-500 text-center text-lg font-thin"
+                        >
+                          <p>{getStats("date", i)}</p>
+                          <p>{getStats("time", i)}</p>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  <!-- End Await -->
                 {/each}
+                <!-- End Await -->
               {/await}
             </div>
           </div>
         </div>
+
         <!-- Main Content End -->
         <!-- Right Sidebar Start -->
         <div>
@@ -475,19 +440,3 @@
     </div>
   </div>
 </main>
-
-<style>
-  .crop-champion {
-    background-size: 74px;
-    background-position: center;
-  }
-  .gold {
-    color: #f3a05a;
-  }
-  .damage {
-    color: #e25656;
-  }
-  .kp {
-    color: #b78787;
-  }
-</style>

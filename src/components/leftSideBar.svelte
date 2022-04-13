@@ -15,7 +15,7 @@
 <!-- Left Sidebar Start -->
 
 <div
-  class="flex flex-col items-center w-16 h-screen bg-black bg-opacity-50 text-gray-100 border-r-4 border-opacity-40 border-black"
+  class="flex flex-col items-center w-16 h-screen bg-palette-100 bg-opacity-0 text-gray-100 border-r-4 border-opacity-40 border-black"
 >
   <!-- Logo -->
   <a class="flex items-center justify-center mt-10" href="#">
