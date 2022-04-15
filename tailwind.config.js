@@ -55,7 +55,10 @@ module.exports = {
           800: "#41101F",
           900: "#120307",
 
-        }
+        },
+        ranks: {
+          100: "#8f563f"
+        },
       },
       borderRadius: {
         "4xl": "2rem",
@@ -68,9 +71,9 @@ module.exports = {
     purgeLayersByDefault: true,
     removeDeprecatedGapUtilities: true,
   },
-  plugins: [],
+  plugins: [require('tw-elements/dist/plugin')],
   purge: {
-    content: ["./src/App.svelte"],
+    content: ["./src/App.svelte", './node_modules/tw-elements/dist/js/**/*.js'],
     enabled: production, // disable purge in dev
   },
 };

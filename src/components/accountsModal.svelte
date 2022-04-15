@@ -12,6 +12,7 @@
   function toggleModal(component) {
     modalContent = component;
     showModal = !showModal;
+    console.log(showModal);
   }
 
   // define variables
@@ -50,20 +51,14 @@
     const formData = new FormData(e.target);
     jsonFormData = Object.fromEntries(formData.entries());
     console.log(jsonFormData);
-    writeConfig;
-    // write data to config file
-    window.electronAPI.writeToFile(JSON.stringify(configJson, null, 2));
-  }
 
-  function writeConfig() {
-    // check number of added accounts with flag in json
     for (let i = 0; i < configJson["accounts"].length; i++) {
       let existsFlag = configJson["existing"];
 
       if (existsFlag === i) {
         // write data to config file
         configJson["accounts"][i]["summonerName"] =
-          jsonFormData["SummonerName"];
+                jsonFormData["SummonerName"];
         configJson["accounts"][i]["userName"] = jsonFormData["UserName"];
         configJson["accounts"][i]["password"] = jsonFormData["Password"];
         configJson["accounts"][i]["exists"] = 1;
@@ -73,17 +68,22 @@
         // write data to config file
         console.log("need to overwrite");
         // set modal to true
-        showModal = true;
+        toggleModal(overwriteModal)
         break;
       } else {
         // write data to config file
-        console.log("the current i is: " + i);
         console.log("the current existsFlag is: " + existsFlag);
       }
     }
-    console.log(configJson);
+
+    // write data to config file
+    window.electronAPI.writeToFile(JSON.stringify(configJson, null, 2));
   }
 </script>
+
+{#if showModal}
+  <Modal on:click={toggleModal} {modalContent} />
+{/if}
 
 <Draggable>
   <div
@@ -163,7 +163,4 @@
       </div>
     </div>
   </div>
-  {#if showModal}
-    <Modal on:click={toggleModal} {overwriteModal} />
-  {/if}
 </Draggable>

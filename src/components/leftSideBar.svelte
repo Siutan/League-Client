@@ -1,6 +1,6 @@
 <script>
   import Modal from "./custom_components/modal.svelte";
-  import accountsModal from "./accountsModal.svelte";
+  import settingsModal from "./overwriteModal.svelte";
 
   let showModal = false;
   let modalContent;
@@ -125,7 +125,7 @@
     id="modalBtn"
     class="flex items-center justify-center w-16 h-16 mt-auto rounded-full hover:bg-white hover:bg-opacity-5 hover:bg-gray-900"
     href="#"
-    on:click={() => toggleModal(accountsModal)}
+    on:click={() => toggleModal(settingsModal)}
   >
     <svg
       class="w-6 h-6 stroke-current"
