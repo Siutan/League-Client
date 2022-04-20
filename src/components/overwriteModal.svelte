@@ -1,32 +1,32 @@
 <script>
   import "tw-elements";
-  import { onMount } from "svelte";
-  import Draggable from "./custom_components/draggable.svelte";
+  import AccountCard from "./accountCard.svelte";
 
   // define variables
   let jsonFormData = {}; // form data
   let configJson = {}; // config data
   let leagueDir = ""; // league directory
-  let accounts = {}; // accounts
+  let accounts = []; // accounts data
 
-  onMount(() => {
+  async function pog () {
     // get config data
-    window.electronAPI
+    await window.electronAPI
       .getPath()
       .then((userDataPath) => {
         configJson = JSON.parse(userDataPath);
         leagueDir = configJson.appConfig.leagueDir;
-        accounts = configJson.accounts;
-        console.log(leagueDir);
+        for (let i = 0; i < configJson.accounts.length; i++) {
+          accounts.push(configJson.accounts[i]);
+        }
+        console.log(accounts);
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  }
 </script>
 
-<Draggable>
-  <div class="text-white h-xl w-300 shadow-lg rounded-md bg-palette-900">
+  <div class="absolute self-center text-black h-2xl w-2xl shadow-lg rounded-md bg-palette-800">
     <div class="flex place-items-start">
       <ul
         class="nav nav-tabs flex flex-col flex-wrap list-none border-b-0 pl-0 mr-4"
@@ -35,27 +35,27 @@
       >
         <li class="nav-item flex-grow text-center" role="presentation">
           <a
-            href="#tabs-homeVertical"
+            href="#tabs-directories"
             class="
-                  nav-link
-                  block
-                  font-medium
-                  text-xs
-                  leading-tight
-                  uppercase
-                  border-x-0 border-t-0 border-b-2 border-transparent
-                  px-6
-                  py-3
-                  my-2
-                  hover:border-transparent hover:bg-gray-100
-                  focus:border-transparent
-                  active
-                  "
+                      nav-link
+                      block
+                      font-medium
+                      text-xs
+                      leading-tight
+                      uppercase
+                      border-x-0 border-t-0 border-b-2 border-transparent
+                      px-6
+                      py-3
+                      my-2
+                      hover:border-transparent hover:bg-gray-100
+                      focus:border-transparent
+                      active
+                      "
             id="tabs-home-tabVertical"
             data-bs-toggle="pill"
-            data-bs-target="#tabs-homeVertical"
+            data-bs-target="#tabs-directories"
             role="tab"
-            aria-controls="tabs-homeVertical"
+            aria-controls="tabs-directories"
             aria-selected="true">Directories</a
           >
         </li>
@@ -63,19 +63,19 @@
           <a
             href="#tabs-profileVertical"
             class="
-                  nav-link
-                  block
-                  font-medium
-                  text-xs
-                  leading-tight
-                  uppercase
-                  border-x-0 border-t-0 border-b-2 border-transparent
-                  px-6
-                  py-3
-                  my-2
-                  hover:border-transparent hover:bg-gray-100
-                  focus:border-transparent
-                  "
+                      nav-link
+                      block
+                      font-medium
+                      text-xs
+                      leading-tight
+                      uppercase
+                      border-x-0 border-t-0 border-b-2 border-transparent
+                      px-6
+                      py-3
+                      my-2
+                      hover:border-transparent hover:bg-gray-100
+                      focus:border-transparent
+                      "
             id="tabs-profile-tabVertical"
             data-bs-toggle="pill"
             data-bs-target="#tabs-profileVertical"
@@ -88,7 +88,7 @@
       <div class="tab-content" id="tabs-tabContentVertical">
         <div
           class="tab-pane fade show active"
-          id="tabs-homeVertical"
+          id="tabs-directories"
           role="tabpanel"
           aria-labelledby="tabs-home-tabVertical"
         >
@@ -100,7 +100,7 @@
               aria-labelledby="tabs-home-tab"
             >
               <div>
-                <div class="mb-3">
+                <div class="mb-3 p-10">
                   <label
                     for="leagueDir"
                     class="form-label inline-block mb-2 text-gray-700"
@@ -139,9 +139,18 @@
           role="tabpanel"
           aria-labelledby="tabs-profile-tabVertical"
         >
-          Tab 2 content vertical
+          <div class="flex flex-row p-10">
+            {#await pog()}
+              loading...
+            {:then lol}
+              {#each accounts as {summonerName, userName}, i}
+              <div class="p-3">
+                <AccountCard index={i} summonerName={summonerName} username={userName} />
+              </div>
+                {/each}
+            {/await}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</Draggable>

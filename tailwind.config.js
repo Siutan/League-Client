@@ -22,6 +22,14 @@ module.exports = {
         md: "16px",
         lg: "24px",
         xl: "480px",
+        "2xl": "700px",
+      },
+      width: {
+        sm: "8px",
+        md: "16px",
+        lg: "24px",
+        xl: "480px",
+        "2xl": "1250px",
       },
       colors: {
         transparent: "transparent",

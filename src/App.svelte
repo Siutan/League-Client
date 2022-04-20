@@ -4,7 +4,8 @@
   // - Make app read summoner names from savedData.json
 
   // props go here
-
+  export let summoner1;
+  console.log(summoner1);
   //imports
   import "tw-elements";
   import LeftSidebar from "./components/leftSideBar.svelte";
@@ -47,7 +48,7 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ summoner: "homos in paris", region: "oc1" }),
+      body: JSON.stringify({ summoner: summoner1, region: "oc1" }),
     });
     summonerBasic = await basicData.json();
 
@@ -68,8 +69,6 @@
           summonerBasic.ranked.flex5v5.losses,
       },
     };
-
-    console.log(rankedJson);
 
     // summoner Overview
     let overviewData = await fetch(
@@ -221,13 +220,14 @@
 
 <main class="overflow-hidden">
   <div
-    class="bg-gray-500 flex flex-col h-screen bg-gradient-to-b from-pink-700 via-palette-600 to-palette-800"
+    class="bg-gray-500 flex flex-col h-screen bg-gradient-to-b from-pink-900 via-palette-600 to-palette-800"
   >
     <div class="relative h-5 bg-opacity-50" style="-webkit-app-region: drag">
       <span class="float-right top-2 right-2 ">
         <button
           on:click={handleClose}
           type="button"
+
           class="rounded-md pr-4 pt-2 inline-flex items-center justify-center text-gray-400 hover:text-red-500"
         >
           <span class="text-3xl font-medium">&times;</span>
@@ -242,18 +242,18 @@
           class="fixed top-40 inset-y-0 left-48 flex justify-center items-center"
         >
           <div class="container space-y-4">
-            <h1 class="text-4xl font-mono text-white font-extrabold">
+            <h1 class="text-5xl font-sans text-white font-bolf">
               LEAGUE OF LEGENDS
             </h1>
             <div
-              class="bg-palette-900 space-x-2 rounded-full h-14 w-32 flex items-center justify-center"
+              class="bg-palette-900 space-x-2 rounded-full h-14 w-32 flex items-center justify-center text-palette-100 hover:bg-palette-100 hover:text-palette-900 duration-700"
             >
               <img class="h-8 w-8" src="../public/img/play_btn.png" alt="" />
-              <span class="text-lg text-white font-bold leading-none">PLAY</span
+              <span class="text-lg font-bold leading-none">PLAY</span
               >
             </div>
             <!-- Match History -->
-            <div class="flex flex-row gap-8">
+            <div class="flex flex-row gap-3">
               <div
                 class="overflow-hidden p-8 space-y-8 bg-palette-900 bg-opacity-50 h-full w-300 rounded-lg"
               >
