@@ -1,28 +1,31 @@
 import App from "./App.svelte";
 
-fetch("https://api.leaguestats.gg/summoner/basic", {
-  method: "POST", // or 'PUT'
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ summoner: "homos in paris", region: "oc1" }),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    localStorage.setItem("summonerBasic", JSON.stringify(data));
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+//TODO:
+// - package appConfig json by summonerNAme, username and password
+// - pass to App.svelte
 
-let summonerData = JSON.parse(localStorage.getItem("summonerBasic"));
+let appConfig = [];
 
-const app = new App({
-  target: document.body,
-  props: {
-    summonerLevel: `${summonerData.account.summonerLevel}`,
-    summonerName: `${summonerData.account.name}`,
-  },
+async function pog () {
+    // get config data
+    await window.electronAPI
+        .getPath()
+        .then((userDataPath) => {
+            appConfig = JSON.parse(userDataPath);
+            console.log(appConfig);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+pog().then(r =>{
+    const app = new App({
+        target: document.body,
+        props: {
+            summoner1: appConfig.accounts[0].summonerName,
+        },
+    });
 });
 
 export default app;

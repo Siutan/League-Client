@@ -1,16 +1,37 @@
 <script>
-
   //TODO:
-  // - Move the right side bar into its own component.
+  // - Write to file only if previous accounts not found, if found, prompt overwrite.
   // - Make app read summoner names from savedData.json
-  // - start on the next dashboard component
 
-  // imports
-  export let summonerIcon;
-  export let summonerLevel;
-  export let summonerName;
+  // props go here
+  export let summoner1;
+  console.log(summoner1);
+
+  //imports
+  import "tw-elements";
   import LeftSidebar from "./components/leftSideBar.svelte";
-  import BlankMatchCard from "./components/matchCard.svelte";
+  import RightSidebar from "./components/rightSideBar.svelte";
+  import BlankMatchCard from "./components/matchCardSkeleton.svelte";
+  import RankCard from "./components/stat_components/rankCard.svelte";
+  import ChampionStatsCard from "./components/stat_components/championStatsCard.svelte";
+
+  // get config
+  let appConfig = {};
+
+  // stats data
+  let rankedJson = {};
+  let championStats = {};
+
+  // get config data
+  window.electronAPI
+    .getPath()
+    .then((userDataPath) => {
+      appConfig = JSON.parse(userDataPath);
+      console.log(appConfig);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   //close btn
   function handleClose() {
@@ -28,11 +49,29 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ summoner: "homos in paris", region: "oc1" }),
+      body: JSON.stringify({ summoner: summoner1, region: "oc1" }),
     });
     summonerBasic = await basicData.json();
 
-    // sumoner Overview
+    rankedJson = {
+      soloQ: {
+        rank: summonerBasic.ranked.soloQ.fullRank,
+        lp: summonerBasic.ranked.soloQ.leaguePoints,
+        winRate: summonerBasic.ranked.soloQ.winrate,
+        played:
+          summonerBasic.ranked.soloQ.wins + summonerBasic.ranked.soloQ.losses,
+      },
+      flex5v5: {
+        rank: summonerBasic.ranked.flex5v5.fullRank,
+        lp: summonerBasic.ranked.flex5v5.leaguePoints,
+        winRate: summonerBasic.ranked.flex5v5.winrate,
+        played:
+          summonerBasic.ranked.flex5v5.wins +
+          summonerBasic.ranked.flex5v5.losses,
+      },
+    };
+
+    // summoner Overview
     let overviewData = await fetch(
       "https://api.leaguestats.gg/summoner/overview",
       {
@@ -50,6 +89,8 @@
     );
     summonerOverview = await overviewData.json();
 
+    championStats = summonerOverview.stats.champion;
+
     //summoner perks
     let getPerks = await fetch("https://api.leaguestats.gg/cdragon/runes");
     perks = await getPerks.json();
@@ -61,11 +102,21 @@
   }
 
   // Get win or loss
-  function getWinLoss(matchIndex) {
-    if (summonerOverview.matchesDetails[matchIndex].result === "Win") {
-      return "bg-teal-900";
+  function getWinLoss(matchIndex, usage) {
+    // if usage = style, change style depending on win or loss
+    if (usage === "style") {
+      if (summonerOverview.matchesDetails[matchIndex].result === "Win") {
+        return "text-blue-500";
+      } else {
+        return "text-red-500";
+      }
     } else {
-      return "bg-sienna-100";
+      // if usage = text, return win or loss
+      if (summonerOverview.matchesDetails[matchIndex].result === "Win") {
+        return "VICTORY";
+      } else {
+        return "DEFEAT";
+      }
     }
   }
 
@@ -96,10 +147,55 @@
 
   // Get Stats
   function getStats(stat, matchIndex) {
-    if (stat === "level") {
-      return summonerOverview.matchesDetails[matchIndex].level;
-    } else {
-      return summonerOverview.matchesDetails[matchIndex].stats[stat];
+    // create switch case for each stat below
+    let base = summonerOverview.matchesDetails[matchIndex].stats;
+    switch (stat) {
+      case "kda":
+        return base.kills + "/" + base.deaths + "/" + base.assists;
+      case "kda-ratio":
+        return base["kda"];
+      case "level":
+        return summonerOverview.matchesDetails[matchIndex].level;
+      case "kp":
+        return base["kp"];
+      case "gold":
+        return formatThousand(base.gold);
+      case "damage":
+        return formatThousand(base.dmgChamp);
+      case "minions":
+        return base["minions"];
+      case "vision":
+        return base["vision"];
+      case "time":
+        return convertTime(summonerOverview.matchesDetails[matchIndex]["time"]);
+      case "date":
+        return timeAgo(summonerOverview.matchesDetails[matchIndex].date);
+    }
+  }
+  // convert seconds into minutes + seconds to 2 seconds
+  function convertTime(time) {
+    let minutes = Math.floor(time / 60);
+    let seconds = time - minutes * 60;
+    return minutes + ":" + seconds;
+  }
+  function timeAgo(input) {
+    const date = input instanceof Date ? input : new Date(input);
+    const formatter = new Intl.RelativeTimeFormat("en");
+    const ranges = {
+      years: 3600 * 24 * 365,
+      months: 3600 * 24 * 30,
+      weeks: 3600 * 24 * 7,
+      days: 3600 * 24,
+      hours: 3600,
+      minutes: 60,
+      seconds: 1,
+    };
+    const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+    for (let key in ranges) {
+      if (ranges[key] < Math.abs(secondsElapsed)) {
+        const delta = secondsElapsed / ranges[key];
+        return formatter.format(Math.round(delta), key);
+      }
     }
   }
 
@@ -120,91 +216,25 @@
       : Math.sign(num) * Math.abs(num);
   }
 
-  // Get Gold
-  function getGold(matchIndex) {
-    let gold = summonerOverview.matchesDetails[matchIndex].stats.gold;
-    return formatThousand(gold);
-  }
-
-  // Get Damage
-  function getDamage(matchIndex) {
-    let damage = summonerOverview.matchesDetails[matchIndex].stats.dmgChamp;
-    return formatThousand(damage);
-  }
-
-  // get runes
-  function getPerks(perkType, matchIndex) {
-    if (perkType === "primary") {
-      try {
-        let perk =
-          summonerOverview.matchesDetails[matchIndex].perks.selected[0];
-        let primaryPerk = perks.perks[perk].icon;
-        primaryPerk = primaryPerk.substring(primaryPerk.indexOf("Styles/") + 1);
-        primaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${primaryPerk.toLowerCase()}`;
-        return primaryPerk;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    } else {
-      try {
-        let perk =
-          summonerOverview.matchesDetails[matchIndex].perks.secondaryStyle;
-        let secondaryPerk = perks.perkstyles[perk].icon;
-        secondaryPerk = secondaryPerk.substring(
-          secondaryPerk.indexOf("Styles/") + 1
-        );
-        secondaryPerk = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/s${secondaryPerk.toLowerCase()}`;
-        return secondaryPerk;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    }
-  }
-
-  //get summoner spells
-  function getSpells(spellIndex, matchIndex) {
-    if (spellIndex === 1) {
-      try {
-        return summonerOverview.matchesDetails[matchIndex].summonerSpell1.icon;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    } else if (spellIndex === 2) {
-      try {
-        return summonerOverview.matchesDetails[matchIndex].summonerSpell2.icon;
-      } catch (error) {
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/220px-Black_colour.jpg";
-      }
-    }
+  // Play Button Logic
+  // call open application api from window.openApplication
+  function playBtn() {
+    window.electronAPI.openApp("test.txt");
   }
 </script>
 
 <main class="overflow-hidden">
-  <div class="bg-gray-500 flex flex-col h-screen bg-background-1">
-    <div class="relative h-5" style="-webkit-app-region: drag">
-      <span class="absolute inset-y-1 right-2">
+  <div
+    class="bg-gray-500 flex flex-col h-screen bg-palette-700"
+  >
+    <div class="relative h-5 bg-opacity-50" style="-webkit-app-region: drag">
+      <span class="float-right top-2 right-2 ">
         <button
           on:click={handleClose}
           type="button"
-          class="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+          class="rounded-md pr-4 pt-2 inline-flex items-center justify-center text-gray-400 hover:text-red-500"
         >
-          <span class="sr-only">Close menu</span>
-          <!-- Heroicon name: outline/x -->
-          <svg
-            class="h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <span class="text-3xl font-medium">&times;</span>
         </button>
       </span>
       <div class="justify-center items-center">
@@ -216,278 +246,154 @@
           class="fixed top-40 inset-y-0 left-48 flex justify-center items-center"
         >
           <div class="container space-y-4">
-            <h1 class="text-4xl font-mono text-white font-extrabold">
+            <h1 class="text-5xl font-sans text-white font-bolf">
               LEAGUE OF LEGENDS
             </h1>
-            <div
-              class="bg-blue-100 space-x-2 rounded-full h-14 w-32 flex items-center justify-center"
+            <button
+              on:click={playBtn}
+              class="bg-palette-900 space-x-2 rounded-full h-14 w-32 flex items-center justify-center text-palette-100 hover:bg-palette-100 hover:text-palette-900 duration-700"
             >
               <img class="h-8 w-8" src="../public/img/play_btn.png" alt="" />
-              <span class="text-lg font-extrabold leading-none">PLAY</span>
-            </div>
+              <span class="text-lg font-bold leading-none">PLAY</span>
+            </button>
             <!-- Match History -->
-            <div
-              class="overflow-hidden p-10 space-y-8 bg-black bg-opacity-80 h-xl w-300 rounded-4xl"
-            >
-              <!-- Match Card -->
-              {#await getData()}
-                <BlankMatchCard />
-                <BlankMatchCard />
-                <BlankMatchCard />
-              {:then pog}
-                {#each Array(3) as _, i}
-                  <div
-                    class=" overflow-hidden justify-center items-center place-content-center relative bg-opacity-50 rounded-3xl h-28 w-full place-items-center {getWinLoss(
-                      i
-                    )} "
-                  >
+            <div class="flex flex-row gap-3">
+              <div
+                class="overflow-hidden p-8 space-y-8 bg-palette-900 bg-opacity-50 h-full w-300 rounded-lg"
+              >
+                <div class="border-10 border-l-4 border-palette-100 mb-5">
+                  <p class="pl-1 text-palette-100">Match History</p>
+                </div>
+                <!-- Match Card -->
+                {#await getData()}
+                  <BlankMatchCard />
+                  <BlankMatchCard />
+                  <BlankMatchCard />
+                {:then pog}
+                  {#each Array(3) as _, i}
                     <div
-                      class=" text-white flex flex-wrap place-content-center h-full"
+                      class="relative bg-palette-800 px-5 pt-5 pb-5 shadow-xl ring-1 ring-palette-600 sm:mx-auto sm:rounded-lg sm:px-8"
                     >
-                      <div>
-                        <div class="flex">
-                          <div class="flex flex-col items-center justify-end">
-                            <div
-                              class="h-6 text-base font-extrabold leading-none text-teal-500 uppercase"
-                            >
-                              {getChampion("alias", i)}
-                            </div>
-                            <div
-                              class="w-10 text-xs font-extrabold text-center text-teal-500"
-                            >
-                              LVL {getStats("level", i)}
-                            </div>
-                            <div
-                              class="relative z-30 flex items-end h-6 text-sm font-extrabold text-white"
-                            >
-                              {getGamemode(i)}
-                            </div>
-                          </div>
-                          <img
-                            class=" object-fill w-20 h-20 ml-2 rounded-full justify-center crop-champion items-center bg-blue-900"
-                            draggable="false"
-                            src={getChampion("icon", i)}
-                            alt=""
-                          />
-                          <div class="flex flex-col justify-around ml-2">
-                            <img
-                              class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900"
-                              draggable="false"
-                              src={getSpells(1, i)}
-                              alt=""
-                            />
-                            <img
-                              class="w-6 h-6 bg-center bg-cover rounded-md bg-blue-900"
-                              draggable="false"
-                              src={getSpells(2, i)}
-                              alt=""
-                            />
-                          </div>
-                          <div class="flex flex-col justify-around ml-1">
-                            <img
-                              class="w-6 h-6 rounded-md bg-blue-1000"
-                              draggable="false"
-                              src={getPerks("primary", i)}
-                              alt=""
-                            />
-                            <img
-                              class="w-6 h-6 rounded-md bg-blue-1000"
-                              draggable="false"
-                              src={getPerks("secondary", i)}
-                              alt=""
-                            />
-                          </div>
+                      <div class="relative mx-auto">
+                        <div class="grid grid-cols-6 gap">
+                          <!-- Champion Icon and Lane -->
                           <div
-                            class="flex flex-col items-center justify-center"
+                            class=" w-20 h-20 overflow-hidden border-solid border-2 border-palette-600 rounded-lg"
                           >
-                            <div
-                              class="pl-8 text-base font-extrabold text-teal-500"
-                            >
-                              <span>{getStats("kills", i)}</span>
-                              <span>/</span>
-                              <span class="text-red-500"
-                                >{getStats("kills", i)}</span
-                              >
-                              <span>/</span>
-                              <span>{getStats("assists", i)}</span>
-                            </div>
-                            <div
-                              class="relative pl-3 z-30 mt-2 text-xs font-extrabold text-white"
-                            >
-                              {getStats("kda", i)} KDA
-                            </div>
+                            <img
+                              src={getChampion("icon", i)}
+                              alt="Champion Icon"
+                            />
+                            <img
+                              class="absolute w-8 inset-14 bg-palette-900 rounded-md"
+                              src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png"
+                              alt="Champion Icon"
+                            />
                           </div>
-                          <div class="pl-10 flex items-center py-6 second">
-                            <div class="flex items-6-rows flex-wrap">
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(0, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(1, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(2, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(3, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(4, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div aria-haspopup="true">
-                                  <div class="relative">
-                                    <img
-                                      class="relative z-10 bg-center bg-cover rounded-md bg-blue-1000 ml-1 w-8 h-8 cursor-pointer"
-                                      draggable="false"
-                                      src={getItems(5, i)}
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                          <!-- Outcome and Gamemode -->
+                          <div class="pl-5 pt-3 text-center">
+                            <p class=" font-extrabold {getWinLoss(i, 'style')}">
+                              {getWinLoss(i, "text")}
+                            </p>
+                            <p class="text-gray-500 font-semibold">
+                              {getGamemode(i)}
+                            </p>
                           </div>
-                          <div class="relative ml-4">
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold text-teal-500">
-                                {getStats("minions", i)}
-                              </div>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold gold">
-                                {getGold(i)}
-                              </div>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold damage">
-                                {getDamage(i)}
-                              </div>
-                            </div>
-                            <div class="flex items-center">
-                              <div class="ml-1 text-sm font-bold kp">
-                                {getStats("kp", i)}%
-                              </div>
-                            </div>
+                          <!-- KDA -->
+                          <div class="pl-5 pt-3 text-center">
+                            <p class="text-gray-200 font-bold">
+                              {getStats("kda", i)}
+                            </p>
+                            <p
+                              class="inline-block text-gray-400 text-xs font-thin"
+                            >
+                              {getStats("kda-ratio", i)} KDA
+                            </p>
+                          </div>
+                          <!-- Items -->
+                          <div
+                            class=" w-24 h-20 grid grid-cols-3 grid-rows-2 gap-x-1 gap-y-0"
+                          >
+                            <img
+                              class="rounded-lg"
+                              src={getItems("0", i)}
+                              alt="Item 1"
+                            />
+                            <img
+                              class="rounded-lg"
+                              src={getItems("1", i)}
+                              alt="Item 2"
+                            />
+                            <img
+                              class="rounded-lg"
+                              src={getItems("2", i)}
+                              alt="Item 3"
+                            />
+                            <img
+                              class="rounded-lg"
+                              src={getItems("3", i)}
+                              alt="Item 4"
+                            />
+                            <img
+                              class="rounded-lg"
+                              src={getItems("4", i)}
+                              alt="Item 5"
+                            />
+                            <img
+                              class="rounded-lg"
+                              src={getItems("5", i)}
+                              alt="Item 6"
+                            />
+                          </div>
+                          <!-- CS + Gold + DMG + KP -->
+                          <div
+                            class="pl-5 text-left text-xs font-bold grid grid-cols-1 grid-rows-4 uppercase"
+                          >
+                            <p class="text-green-500">
+                              {getStats("minions", i)} CS
+                            </p>
+                            <p class="text-yellow-600 ">
+                              {getStats("gold", i)}
+                            </p>
+                            <p class="text-red-800 ">{getStats("damage", i)}</p>
+                            <p class="text-purple-700">
+                              {getStats("kp", i)}% KP
+                            </p>
+                          </div>
+                          <!-- Gametime -->
+                          <div
+                            class="pt-3 text-gray-500 text-center text-lg font-thin"
+                          >
+                            <p>{getStats("date", i)}</p>
+                            <p>{getStats("time", i)}</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  {/each}
 
                   <!-- End Await -->
-                {/each}
-              {/await}
+                {/await}
+              </div>
+              <!--- Start other stats-->
+              <div class="flex flex-col gap-3">
+                {#await getData()}
+                  <div class="text-white font-bold text-md">Loading...</div>
+                {:then pog}
+                  <RankCard {rankedJson} />
+                  <ChampionStatsCard {championStats} />
+                {/await}
+              </div>
+              <!--- End other stats-->
             </div>
           </div>
         </div>
         <!-- Main Content End -->
+
         <!-- Right Sidebar Start -->
-        <div>
-          <div class="absolute inset-y-96 right-0 h-72 w-16">
-            <div
-              class="hover:w-80 hover:bg-opacity-90 overflow-visible duration-1000 absolute border-opacity-40 border-t-2 border-l-2 border-b-2 text-white p-3 bg-opacity-50 border-black bg-black rounded-l-3xl inset-y-0 right-0 w-20"
-            >
-              <div
-                class="h-full items-center grid grid-cols-1 whitespace-nowrap"
-              >
-                <div
-                  class="flex space-x-16 rounded-full hover:bg-white hover:bg-opacity-5 items-center"
-                >
-                  <img
-                    class="h-12 w-12 border-2 border-black rounded-full"
-                    src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon2074.png"
-                    alt="icon-1"
-                  />
-                  <span class="">{summonerName}</span>
-                </div>
-                <div
-                  class="flex space-x-16 rounded-full hover:bg-white hover:bg-opacity-5 items-center"
-                >
-                  <img
-                    class="h-12 w-12 border-2 border-black rounded-full"
-                    src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon2076.png"
-                    alt="icon-1"
-                  />
-                  <span class="">Ntvvckda</span>
-                </div>
-                <div
-                  class="flex space-x-16 rounded-full hover:bg-white hover:bg-opacity-5 items-center"
-                >
-                  <img
-                    class="h-12 w-12 border-2 border-black rounded-full"
-                    src="https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon2077.png"
-                    alt="icon-1"
-                  />
-                  <span class="">Madart</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <RightSidebar />
         <!-- Right Sidebar End -->
       </div>
     </div>
   </div>
 </main>
-
-<style>
-  .crop-champion {
-    background-size: 74px;
-    background-position: center;
-  }
-  .gold {
-    color: #f3a05a;
-  }
-  .damage {
-    color: #e25656;
-  }
-  .kp {
-    color: #b78787;
-  }
-</style>

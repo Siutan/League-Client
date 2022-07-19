@@ -1,30 +1,89 @@
 <script>
+  import { onMount } from "svelte";
   import Draggable from "./custom_components/draggable.svelte";
   import Input from "./custom_components/Input.svelte";
+  import Modal from "./custom_components/modal.svelte";
+  import overwriteModal from "./settingsModal.svelte";
+
+  let showModal = false;
+  let modalContent;
+
+  // pass in component as parameter and toggle modal state
+  function toggleModal(component) {
+    modalContent = component;
+    showModal = !showModal;
+    console.log(showModal);
+  }
 
   // define variables
   let jsonFormData = {}; // form data
   let configJson = {}; // config data
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    jsonFormData = Object.fromEntries(formData.entries());
-    window.electronAPI.writeToFile(JSON.stringify(jsonFormData, null, 2));
-  }
+  onMount(async () => {
+    // get config data
+    window.electronAPI
+      .getPath()
+      .then((userDataPath) => {
+        configJson = JSON.parse(userDataPath);
+        console.log(configJson);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 
   function readData() {
     window.electronAPI
       .getPath()
       .then((userDataPath) => {
-        console.log(userDataPath);
-        configJson = userDataPath;
+        configJson = JSON.parse(userDataPath);
+        console.log(configJson);
       })
       .catch((err) => {
         console.log(err);
       });
   }
+
+  function handleSubmit(e) {
+    //prevent form submission
+    e.preventDefault();
+    //get form data and put into json
+    const formData = new FormData(e.target);
+    jsonFormData = Object.fromEntries(formData.entries());
+    console.log(jsonFormData);
+
+    for (let i = 0; i < configJson["accounts"].length; i++) {
+      let existsFlag = configJson["existing"];
+
+      if (existsFlag === i) {
+        // write data to config file
+        configJson["accounts"][i]["summonerName"] =
+          jsonFormData["SummonerName"];
+        configJson["accounts"][i]["userName"] = jsonFormData["UserName"];
+        configJson["accounts"][i]["password"] = jsonFormData["Password"];
+        configJson["accounts"][i]["exists"] = 1;
+        configJson["existing"] = i + 1;
+        break;
+      } else if (existsFlag === 3) {
+        // write data to config file
+        console.log("need to overwrite");
+        // set modal to true
+        toggleModal(overwriteModal);
+        break;
+      } else {
+        // write data to config file
+        console.log("the current existsFlag is: " + existsFlag);
+      }
+    }
+
+    // write data to config file
+    window.electronAPI.writeToFile(JSON.stringify(configJson, null, 2));
+  }
 </script>
+
+{#if showModal}
+  <Modal on:click={toggleModal} {modalContent} />
+{/if}
 
 <Draggable>
   <div
@@ -47,6 +106,9 @@
             class=" underline text-white">privacy policy</a
           >.
         </div>
+        <div class="text-center self-center mb-6 text-sm font-light text-white">
+          Please restart the program after adding your account.
+        </div>
 
         <div class="mt-8">
           <form autocomplete="off" on:submit={handleSubmit}>
@@ -54,8 +116,8 @@
               <div class="flex relative">
                 <Input
                   type="text"
-                  label="Summoner Name"
-                  name="Summoner Name"
+                  label="SummonerName"
+                  name="SummonerName"
                   placeholder="Summoner Name"
                 />
               </div>
@@ -65,8 +127,8 @@
               <div class="flex relative">
                 <Input
                   type="text"
-                  label="Username"
-                  name="Username"
+                  label="UserName"
+                  name="UserName"
                   placeholder="Username"
                 />
               </div>
@@ -85,20 +147,18 @@
 
             <div class="flex w-full">
               <button
-                on:click={readData}
                 class="py-2 px-4 bg-teal-900 hover:bg-teal-500 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
               >
-                Read File
+                Set Form Data || Add Account
               </button>
-              <div class="flex w-full">
-                <button
-                  class="py-2 px-4 bg-teal-900 hover:bg-teal-500 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                >
-                  Write File
-                </button>
-              </div>
             </div>
           </form>
+          <button
+            on:click={readData}
+            class="py-2 px-4 bg-teal-900 hover:bg-teal-500 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+          >
+            Read File
+          </button>
         </div>
       </div>
     </div>
