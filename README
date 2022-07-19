@@ -1,0 +1,54 @@
+# Noxus Launcher
+
+A sort of launcher for league of legends that I've been working on to get familiar with svelte and tailwind and also because the current client lacks a lot of features that I wanted to have, such as multiple accounts and game stats right in the launcher, as well as being able to open the other games by Riot (eg. Valorant and Legends of Runeterra).
+
+It's still a large Work in Progress so feel free to fork and Pull Request any changes you might have.
+
+## Features
+
+So far I've added a stats display that shows:
+- Match History (shows last 3 matches only, maybe change this later to have more with a scrolling view)
+- Solo/Duo and Flex ranks (shows ranks, games played, winrate and LP
+- General champion stats sorted by most played (shows games played, winrate and KDA)
+
+
+## Installation
+
+For NPM:
+
+```bash
+npm i
+```
+For Yarn:
+
+```bash
+yarn
+```
+or
+```bash
+yarn install
+```
+
+## Usage
+
+For NPM:
+
+```bash
+npm run start
+```
+For Yarn:
+
+```bash
+yarn run start
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+
+## Bugs
+- Issue with getting stats on first launch, refresh after loading to get correct output.
+- Issue with some scaling in the setting menu. No idea why it does this, when tested on my PC it works fine but on my laptop its weird. 😕
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

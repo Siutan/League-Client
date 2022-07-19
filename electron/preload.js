@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("api", {
 // file read api
 contextBridge.exposeInMainWorld("electronAPI", {
   getPath: () => ipcRenderer.invoke("getPath"),
-  // get form data from renderer
-  writeToFile: (options) => ipcRenderer.send("save-file", options),
+  writeToFile: (options) => ipcRenderer.send("writeToFile", options),
+
+  openApp: (game) => ipcRenderer.send("openApp", game),
 });

@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const { join } = require("path");
 const fs = require("fs");
+const LCUConnector = require("lcu-connector");
 
 // check if app is running in development mode
 const isDev = !app.isPackaged;
@@ -56,7 +57,50 @@ ipcMain.handle("getPath", () => {
   return fs.readFileSync(configPath, "utf8");
 });
 
-ipcMain.on("save-file", (ev, options) => {
+ipcMain.on("writeToFile", (ev, options) => {
   fs.writeFileSync(configPath, options);
   console.log(options);
 });
+
+// open application+
+ipcMain.on("openApp", (ev, game) => {
+  // read app directory from savedData
+  let appDir = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  // open application
+  const spawn = require("child_process").spawn;
+  const process = spawn(appDir.appConfig.leagueDir, [
+    "--launch-product=league_of_legends",
+    "--launch-patchline=live",
+  ]);
+
+  process.stdout.on("data", (data) => {
+    // Handle data...
+    console.log(data.toString());
+  });
+
+  process.stderr.on("data", (err) => {
+    // Handle error...
+    console.log(err.toString());
+  });
+
+  process.on("exit", (code) => {
+    // Handle exit
+    console.log(`child process exited with code ${code}`);
+  });
+});
+
+const connector = new LCUConnector();
+
+connector.on("connect", (data) => {
+  console.log(data);
+  //  {
+  //    address: '127.0.0.1'
+  //    port: 18633,
+  //    username: 'riot',
+  //    password: H9y4kOYVkmjWu_5mVIg1qQ,
+  //    protocol: 'https'
+  //  }
+});
+
+// Start listening for the LCU client
+connector.start();

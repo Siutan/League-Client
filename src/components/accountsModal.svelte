@@ -3,7 +3,7 @@
   import Draggable from "./custom_components/draggable.svelte";
   import Input from "./custom_components/Input.svelte";
   import Modal from "./custom_components/modal.svelte";
-  import overwriteModal from "./overwriteModal.svelte";
+  import overwriteModal from "./settingsModal.svelte";
 
   let showModal = false;
   let modalContent;
@@ -58,7 +58,7 @@
       if (existsFlag === i) {
         // write data to config file
         configJson["accounts"][i]["summonerName"] =
-                jsonFormData["SummonerName"];
+          jsonFormData["SummonerName"];
         configJson["accounts"][i]["userName"] = jsonFormData["UserName"];
         configJson["accounts"][i]["password"] = jsonFormData["Password"];
         configJson["accounts"][i]["exists"] = 1;
@@ -68,7 +68,7 @@
         // write data to config file
         console.log("need to overwrite");
         // set modal to true
-        toggleModal(overwriteModal)
+        toggleModal(overwriteModal);
         break;
       } else {
         // write data to config file

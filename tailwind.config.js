@@ -9,6 +9,10 @@ module.exports = {
   },
   theme: {
     extend: {
+      animation: {
+        // spin for 1 second and stop
+        "spin-1s": "spin 1s linear infinite",
+      },
       backgroundImage: {
         "background-1": "url('../public/img/background-1.jpg')",
       },

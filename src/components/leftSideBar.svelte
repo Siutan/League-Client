@@ -1,6 +1,6 @@
 <script>
   import Modal from "./custom_components/modal.svelte";
-  import settingsModal from "./overwriteModal.svelte";
+  import settingsModal from "./settingsModal.svelte";
 
   let showModal = false;
   let modalContent;
@@ -99,7 +99,6 @@
     <!-- Legends of Runeterra -->
     <a
       class="relative flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-white hover:bg-opacity-5 hover:text-gray-300"
-      href="#"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

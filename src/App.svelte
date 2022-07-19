@@ -6,13 +6,14 @@
   // props go here
   export let summoner1;
   console.log(summoner1);
+
   //imports
   import "tw-elements";
   import LeftSidebar from "./components/leftSideBar.svelte";
   import RightSidebar from "./components/rightSideBar.svelte";
   import BlankMatchCard from "./components/matchCardSkeleton.svelte";
-  import RankCard from "./components/rankCard.svelte";
-  import ChampionStatsCard from "./components/championStatsCard.svelte";
+  import RankCard from "./components/stat_components/rankCard.svelte";
+  import ChampionStatsCard from "./components/stat_components/championStatsCard.svelte";
 
   // get config
   let appConfig = {};
@@ -215,19 +216,22 @@
       : Math.sign(num) * Math.abs(num);
   }
 
-  console.log(summonerBasic);
+  // Play Button Logic
+  // call open application api from window.openApplication
+  function playBtn() {
+    window.electronAPI.openApp("test.txt");
+  }
 </script>
 
 <main class="overflow-hidden">
   <div
-    class="bg-gray-500 flex flex-col h-screen bg-gradient-to-b from-pink-900 via-palette-600 to-palette-800"
+    class="bg-gray-500 flex flex-col h-screen bg-palette-700"
   >
     <div class="relative h-5 bg-opacity-50" style="-webkit-app-region: drag">
       <span class="float-right top-2 right-2 ">
         <button
           on:click={handleClose}
           type="button"
-
           class="rounded-md pr-4 pt-2 inline-flex items-center justify-center text-gray-400 hover:text-red-500"
         >
           <span class="text-3xl font-medium">&times;</span>
@@ -245,13 +249,13 @@
             <h1 class="text-5xl font-sans text-white font-bolf">
               LEAGUE OF LEGENDS
             </h1>
-            <div
+            <button
+              on:click={playBtn}
               class="bg-palette-900 space-x-2 rounded-full h-14 w-32 flex items-center justify-center text-palette-100 hover:bg-palette-100 hover:text-palette-900 duration-700"
             >
               <img class="h-8 w-8" src="../public/img/play_btn.png" alt="" />
-              <span class="text-lg font-bold leading-none">PLAY</span
-              >
-            </div>
+              <span class="text-lg font-bold leading-none">PLAY</span>
+            </button>
             <!-- Match History -->
             <div class="flex flex-row gap-3">
               <div
@@ -268,7 +272,7 @@
                 {:then pog}
                   {#each Array(3) as _, i}
                     <div
-                      class="relative bg-palette-900 px-5 pt-5 pb-5 shadow-xl ring-1 ring-palette-600 sm:mx-auto sm:rounded-lg sm:px-8"
+                      class="relative bg-palette-800 px-5 pt-5 pb-5 shadow-xl ring-1 ring-palette-600 sm:mx-auto sm:rounded-lg sm:px-8"
                     >
                       <div class="relative mx-auto">
                         <div class="grid grid-cols-6 gap">
@@ -289,7 +293,7 @@
                           <!-- Outcome and Gamemode -->
                           <div class="pl-5 pt-3 text-center">
                             <p class=" font-extrabold {getWinLoss(i, 'style')}">
-                              {getWinLoss(i, 'text')}
+                              {getWinLoss(i, "text")}
                             </p>
                             <p class="text-gray-500 font-semibold">
                               {getGamemode(i)}
